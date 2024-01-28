@@ -1,13 +1,17 @@
+body {
+	background-color: #DCF2F1;
+}
+
 .App {
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
-	background-color: #DCF2F1;
 	padding: 5px;
 }
 
-header{
+header {
 	text-align: center;
+	color: blue;
 }
 
 section {
@@ -29,14 +33,14 @@ form {
 
 .todo {
 	display: flex;
-	justify-content: space-between ;
+	justify-content: space-between;
 	align-items: center;
 	border: 2px solid;
 	border-color: #80BCBD;
 	background-color: #D5F0C1;
 	border-radius: 15px;
 	padding: 5px;
-	margin: 10px ;
+	margin: 10px;
 	width: 90%;
 }
 
@@ -57,4 +61,15 @@ button {
 	background-color: #D5F0C1;
 	border-radius: 15px;
 	padding: 5px;
+}
+
+dialog {
+	width: 400px;
+	margin: 10rem auto;
+	padding: 1rem;
+	border: 2px solid;
+	border-color: #80BCBD;
+	background-color: #DCF2F1;
+	border-radius: 15px;
+	z-index: 100;
 }

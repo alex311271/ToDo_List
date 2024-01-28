@@ -1,106 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
+import * as hook from './hooks';
+import Button from './Components/button/Button.module';
+import { createPortal } from 'react-dom';
 
 export const App = () => {
-	const [toDoList, setToDoList] = useState([]);
 	const [refreshTodoList, setRefreshTodoList] = useState(false);
-	const [text, setText] = useState('');
 	const [modal, setModal] = useState(false);
-	const [isEditToDo, setIsEditToDo] = useState('');
-	const [id, setId] = useState('');
 
-	const inputText = (e) => {
-		setText(e.target.value);
-	};
+	const refreshToDoList = () => setRefreshTodoList(!refreshTodoList);
+	const toggleModal = () => setModal(!modal);
 
-	const editText = (e) => {
-		setIsEditToDo(e.target.value);
-	};
+	const { toDoList } = hook.useRequestGetToDoList(refreshToDoList);
 
-	useEffect(() => {
-		fetch('http://localhost:3003/todoList')
-			.then((response) => response.json())
-			.then((data) => {
-				setToDoList(data);
-			});
-	}, [refreshTodoList]);
+	const { requestAddTodo, text, setText } = hook.useRequestAddToDo(refreshToDoList);
 
-	const requestAddTodo = (e) => {
-		e.preventDefault();
-		const jsonData = { description: text };
-		fetch('http://localhost:3003/todoList', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify(jsonData),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (text === '') {
-					setToDoList(data);
-				}
-				setText('');
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-		setRefreshTodoList(!refreshTodoList);
-	};
+	const { requestDeleteToDo } = hook.useRequestDeleteToDo(refreshToDoList);
 
-	const requestDeleteToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		});
-		setRefreshTodoList(!refreshTodoList);
-	};
+	const { editToDo, isEditToDo, setIsEditToDo, id } =
+		hook.useRequestGetEditToDoList(toggleModal);
 
-	const editToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				setIsEditToDo(data.description);
-				setId(data.id);
-			});
-		setModal(true);
-	};
+	const { requestPutToDo } = hook.useRequestPutEditToDo(
+		refreshToDoList,
+		toggleModal,
+		isEditToDo,
+	);
 
-	const requestPutToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({
-				id: id,
-				description: isEditToDo,
-			}),
-		})
-			.then((response) => response.json())
-			.then((response) => {
-				console.log('Ответ сервера:', response);
-				setModal(false);
-			})
-			.catch((error) => {
-				console.error(error);
-			})
-
-			.finally(() => setRefreshTodoList(!refreshTodoList));
-	};
-
-	const sortToDoList = () => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				const sortToDoList = data.sort((a, b) =>
-					a.description.toLowerCase() < b.description.toLowerCase() ? -1 : 1,
-				);
-				setToDoList(sortToDoList);
-			});
-	};
+	const { sortToDoList, sortTodoList } = hook.useRequestSortToDoList(refreshToDoList);
 
 	return (
 		<div className="App">
@@ -109,41 +35,64 @@ export const App = () => {
 					type="text"
 					className="input"
 					value={isEditToDo}
-					onChange={editText}
+					onChange={(e) => setIsEditToDo(e.target.value)}
 				></input>
-				<button type="submit" onClick={() => requestPutToDo(id)}>
+				<Button type="submit" onClick={() => requestPutToDo(id)}>
 					Save
-				</button>
+				</Button>
 			</dialog>
+
 			<header>
 				<h2>Список дел</h2>
 			</header>
+
 			<section>
 				<form onSubmit={requestAddTodo}>
-					<input type="text" className="input" value={text} onChange={inputText}></input>
-					<button disabled={!text} type="submit">
+					<input
+						type="text"
+						className="input"
+						value={text}
+						onChange={(e) => setText(e.target.value)}
+					></input>
+					<Button disabled={!text} type="submit">
 						Add todo
-					</button>
+					</Button>
 				</form>
 			</section>
 
-			{toDoList.map(({ id, description }) => (
-				<section key={id}>
-					<div className="todo" key={id}>
-						{description}
-						<div>
-							<button id={id} onClick={() => requestDeleteToDo(id)}>
-								Delete
-							</button>
-							<button id={id} onClick={() => editToDo(id)}>
-								Edit
-							</button>
-						</div>
-					</div>
-				</section>
-			))}
+			{sortTodoList.length > 0
+				? sortTodoList.map(({ id, description }) => (
+						<section key={id}>
+							<div className="todo" key={id}>
+								{description}
+								<div>
+									<Button id={id} onClick={() => requestDeleteToDo(id)}>
+										Delete
+									</Button>
+									<Button id={id} onClick={() => editToDo(id)}>
+										Edit
+									</Button>
+								</div>
+							</div>
+						</section>
+				  ))
+				: toDoList.map(({ id, description }) => (
+						<section key={id}>
+							<div className="todo" key={id}>
+								{description}
+								<div>
+									<Button id={id} onClick={() => requestDeleteToDo(id)}>
+										Delete
+									</Button>
+									<Button id={id} onClick={() => editToDo(id)}>
+										Edit
+									</Button>
+								</div>
+							</div>
+						</section>
+				  ))}
 			<section>
-				<button onClick={sortToDoList}>Sorted</button>
+				<Button onClick={sortToDoList}>Sorted</Button>
 			</section>
 		</div>
 	);
