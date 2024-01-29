@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import * as hook from './hooks';
 import Button from './Components/button/Button.module';
-import { createPortal } from 'react-dom';
+// import { createPortal } from 'react-dom';
 
 export const App = () => {
 	const [refreshTodoList, setRefreshTodoList] = useState(false);
@@ -11,20 +11,16 @@ export const App = () => {
 	const refreshToDoList = () => setRefreshTodoList(!refreshTodoList);
 	const toggleModal = () => setModal(!modal);
 
-	const { toDoList } = hook.useRequestGetToDoList(refreshToDoList);
+	const { toDoList } = hook.useRequestGetToDoList();
 
-	const { requestAddTodo, text, setText } = hook.useRequestAddToDo(refreshToDoList);
+	const { requestAddTodo, text, setText } = hook.useRequestAddToDo();
 
-	const { requestDeleteToDo } = hook.useRequestDeleteToDo(refreshToDoList);
+	const { requestDeleteToDo } = hook.useRequestDeleteToDo();
 
 	const { editToDo, isEditToDo, setIsEditToDo, id } =
 		hook.useRequestGetEditToDoList(toggleModal);
 
-	const { requestPutToDo } = hook.useRequestPutEditToDo(
-		refreshToDoList,
-		toggleModal,
-		isEditToDo,
-	);
+	const { requestPutToDo } = hook.useRequestPutEditToDo(toggleModal, isEditToDo);
 
 	const { sortToDoList, sortTodoList } = hook.useRequestSortToDoList(refreshToDoList);
 
@@ -61,7 +57,7 @@ export const App = () => {
 			</section>
 
 			{sortTodoList.length > 0
-				? sortTodoList.map(({ id, description }) => (
+				? sortTodoList.map(([id, { description }]) => (
 						<section key={id}>
 							<div className="todo" key={id}>
 								{description}
@@ -76,7 +72,7 @@ export const App = () => {
 							</div>
 						</section>
 				  ))
-				: toDoList.map(({ id, description }) => (
+				: Object.entries(toDoList).map(([id, { description }]) => (
 						<section key={id}>
 							<div className="todo" key={id}>
 								{description}

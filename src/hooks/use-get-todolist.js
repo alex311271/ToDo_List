@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
+import { ref, onValue } from 'firebase/database';
+import { db_todo } from '../firebase';
 
-export const useRequestGetToDoList = (refreshToDoList) => {
-	const [toDoList, setToDoList] = useState([]);
-
+export const useRequestGetToDoList = () => {
+	const [toDoList, setToDoList] = useState({});
 
 	useEffect(() => {
-		fetch('http://localhost:3003/todoList')
-			.then((response) => response.json())
-			.then((data) => {
-				setToDoList(data);
-			});
-	}, [refreshToDoList]);
+		const toDoListDBRef = ref(db_todo, 'todoList');
+		return onValue(toDoListDBRef, (snapshot) => {
+			const loadedTodos = snapshot.val() || [];
+			setToDoList(loadedTodos)
+		});
+	}, []);
 
-	return{
-		toDoList
-	}
+	return {
+		toDoList,
+	};
 };

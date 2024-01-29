@@ -1,25 +1,24 @@
-export const useRequestPutEditToDo = (refreshToDoList, toggleModal, isEditToDo) => {
+import { ref, set } from 'firebase/database';
+import { db_todo } from '../firebase';
+
+export const useRequestPutEditToDo = (toggleModal, isEditToDo) => {
 	const requestPutToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({
-				id: id,
-				description: isEditToDo,
-			}),
+		const toDoRef = ref(db_todo, `todoList/${id}`);
+		console.log(toDoRef);
+		set(toDoRef, {
+			description: isEditToDo,
 		})
-			.then((response) => response.json())
 			.then((response) => {
 				console.log(`Зпись с id ${id} изменена, ответ сервера:`, response);
-				toggleModal();
 			})
 			.catch((error) => {
 				console.error(error);
 			})
-
-			.finally(() => refreshToDoList());
-	}
-	return{
-		requestPutToDo
-	}
+			.finally(() => {
+				toggleModal();
+			});
+	};
+	return {
+		requestPutToDo,
+	};
 };

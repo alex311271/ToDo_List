@@ -1,23 +1,22 @@
 import { useState } from 'react';
+import { ref, get, child } from 'firebase/database';
+import { db_todo } from '../firebase';
 
-export const useRequestSortToDoList = (refreshToDoList) => {
-	const [sortTodoList, setSortTodoList] = useState([]);
+export const useRequestSortToDoList = () => {
+	const [sortTodoList, setSortTodoList] = useState({});
 	const sortToDoList = () => {
-		fetch(`http://localhost:3003/todoList/`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				const sortToDoList = data.sort((a, b) =>
-					a.description.toLowerCase() < b.description.toLowerCase() ? -1 : 1,
+		const toDoRef = ref(db_todo);
+		get(child(toDoRef, `todoList`))
+			.then((snapshot) => {
+				const todoList = Object.entries(snapshot.val());
+				const toDoList = todoList.sort((a, b) =>
+					a[1].description.toLowerCase() < b[1].description.toLowerCase() ? -1 : 1,
 				);
-				setSortTodoList(sortToDoList);
+				setSortTodoList(toDoList);
 			})
 			.catch((error) => {
 				console.error(error);
-			})
-			.finally(() => refreshToDoList());
+			});
 	};
 	return {
 		sortToDoList,

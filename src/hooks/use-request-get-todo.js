@@ -1,31 +1,30 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { ref, get, child } from 'firebase/database';
+import { db_todo } from '../firebase';
 
 export const useRequestGetEditToDoList = (toggleModal) => {
-
 	const [isEditToDo, setIsEditToDo] = useState('');
 	const [id, setId] = useState('');
 
 	const editToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				setIsEditToDo(data.description);
-				setId(data.id);
+		const toDoRef = ref(db_todo);
+		get(child(toDoRef, `todoList/${id}`))
+			.then((snapshot) => {
+				const todo = snapshot.val().description;
+				setIsEditToDo(todo);
+				setId(id);
 			})
 			.catch((error) => {
 				console.error(error);
 			})
-		toggleModal();
-	}
-	return{
+			.finally(() => {
+				toggleModal();
+			});
+	};
+	return {
 		editToDo,
 		isEditToDo,
 		setIsEditToDo,
-		id
-	}
+		id,
+	};
 };
-
-

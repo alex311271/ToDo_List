@@ -1,20 +1,20 @@
-export const useRequestDeleteToDo = (refreshToDoList) => {
+import { ref, remove } from 'firebase/database';
+import { db_todo } from '../firebase';
+
+export const useRequestDeleteToDo = () => {
 	const requestDeleteToDo = (id) => {
-		fetch(`http://localhost:3003/todoList/${id}`, {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-		})
-			.then((response) => response.json())
+		const toDoListDBRef = ref(db_todo, `todoList/${id}`);
+		remove(toDoListDBRef)
 			.then((response) => {
-				console.log(`Запись с id ${id} удалена, ответ сервера:`, response);
+				console.log(`Запись c id: ${id} удалена, ответ сервера:`, response);
 			})
 			.catch((error) => {
 				console.error(error);
 			})
 
-			.finally(() => refreshToDoList());
-	}
-	return{
-		requestDeleteToDo
-	}
+			// .finally(() => refreshToDoList());
+	};
+	return {
+		requestDeleteToDo,
+	};
 };
