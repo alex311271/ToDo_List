@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './App.css';
 import * as hook from './hooks';
 import Button from './Components/button/Button.module';
-import { createPortal } from 'react-dom';
 
 export const App = () => {
 	const [refreshTodoList, setRefreshTodoList] = useState(false);
