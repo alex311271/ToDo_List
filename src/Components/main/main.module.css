@@ -1,0 +1,26 @@
+.list {
+	display: flex;
+	flex-direction: column;
+	width: 95%;
+}
+
+.form {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	padding: 5px 10px;
+}
+
+.todo {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 2px solid;
+	border-color: #80BCBD;
+	background-color: #D5F0C1;
+	border-radius: 15px;
+	padding: 5px;
+	margin: 10px;
+	width: 100%;
+}

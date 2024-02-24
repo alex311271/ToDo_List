@@ -1,0 +1,31 @@
+.dialog {
+	width: 400px;
+
+	border: 2px solid;
+	border-color: #80BCBD;
+	background-color: #DCF2F1;
+	border-radius: 15px;
+	z-index: 100;
+}
+
+.modal {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.input {
+	align-items: start;
+	border: 2px solid;
+	border-color: #80BCBD;
+	background-color: #D5F0C1;
+	border-radius: 15px;
+	padding: 5px;
+	width: 76%;
+	display: flex;
+	justify-content: space-between;
+}
+
+/* .button_dialog {
+	margin: 11rem;
+} */

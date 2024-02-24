@@ -1,0 +1,27 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.form {
+	display: flex;
+	width: 95%;
+	justify-content: space-between;
+}
+
+.input {
+	align-items: start;
+	border: 2px solid;
+	border-color: #80BCBD;
+	background-color: #D5F0C1;
+	border-radius: 15px;
+	padding: 5px;
+	width: 76%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.button_sorted{
+	margin-top: 1rem;
+}

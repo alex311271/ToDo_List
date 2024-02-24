@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 
-export const useRequestGetToDoList = (refreshToDoList) => {
+export const useRequestGetToDoList = (refreshToDoList, isSorted) => {
 	const [toDoList, setToDoList] = useState([]);
 
-
 	useEffect(() => {
-		fetch('http://localhost:3003/todoList')
+		fetch(
+			isSorted
+				? `http://localhost:3003/todoList?_sort=description`
+				: `http://localhost:3003/todoList`,
+		)
 			.then((response) => response.json())
 			.then((data) => {
 				setToDoList(data);
 			});
-	}, [refreshToDoList]);
+	}, [refreshToDoList, isSorted]);
 
-	return{
-		toDoList
-	}
+	return {
+		toDoList,
+	};
 };

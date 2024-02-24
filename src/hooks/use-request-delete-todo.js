@@ -13,8 +13,8 @@ export const useRequestDeleteToDo = (refreshToDoList) => {
 			})
 
 			.finally(() => refreshToDoList());
-	}
-	return{
-		requestDeleteToDo
-	}
+	};
+	return {
+		requestDeleteToDo,
+	};
 };

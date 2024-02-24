@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useRequestGetEditToDoList = (toggleModal) => {
-
 	const [isEditToDo, setIsEditToDo] = useState('');
 	const [id, setId] = useState('');
 
@@ -14,18 +13,16 @@ export const useRequestGetEditToDoList = (toggleModal) => {
 			.then((data) => {
 				setIsEditToDo(data.description);
 				setId(data.id);
+				toggleModal();
 			})
 			.catch((error) => {
 				console.error(error);
-			})
-		toggleModal();
-	}
-	return{
+			});
+	};
+	return {
 		editToDo,
 		isEditToDo,
 		setIsEditToDo,
-		id
-	}
+		id,
+	};
 };
-
-

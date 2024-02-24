@@ -9,67 +9,10 @@ body {
 	padding: 5px;
 }
 
-header {
-	text-align: center;
-	color: blue;
-}
-
 section {
 	display: flex;
 	padding: 5px;
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
-
-}
-
-form {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	padding: 5px 10px;
-}
-
-.todo {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border: 2px solid;
-	border-color: #80BCBD;
-	background-color: #D5F0C1;
-	border-radius: 15px;
-	padding: 5px;
-	margin: 10px;
-	width: 90%;
-}
-
-.input {
-	align-items: start;
-	border: 2px solid;
-	border-color: #80BCBD;
-	background-color: #D5F0C1;
-	border-radius: 15px;
-	padding: 5px;
-	width: 76%;
-}
-
-button {
-	margin: 3px 15px;
-	border: 2px solid;
-	border-color: #80BCBD;
-	background-color: #D5F0C1;
-	border-radius: 15px;
-	padding: 5px;
-}
-
-dialog {
-	width: 400px;
-	margin: 10rem auto;
-	padding: 1rem;
-	border: 2px solid;
-	border-color: #80BCBD;
-	background-color: #DCF2F1;
-	border-radius: 15px;
-	z-index: 100;
 }

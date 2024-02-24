@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useRequestAddToDo = (refreshToDoList) => {
+export const useRequestAddToDo = ({ refreshToDoList }) => {
 	const [text, setText] = useState('');
 
 	const requestAddTodo = (e) => {
@@ -20,8 +20,8 @@ export const useRequestAddToDo = (refreshToDoList) => {
 			})
 			.catch((error) => {
 				console.error(error);
-			})
-			refreshToDoList();
+			});
+		refreshToDoList();
 	};
 	return {
 		requestAddTodo,

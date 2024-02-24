@@ -18,8 +18,8 @@ export const useRequestPutEditToDo = (refreshToDoList, toggleModal, isEditToDo) 
 			})
 
 			.finally(() => refreshToDoList());
-	}
-	return{
-		requestPutToDo
-	}
+	};
+	return {
+		requestPutToDo,
+	};
 };
