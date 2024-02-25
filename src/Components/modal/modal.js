@@ -3,15 +3,7 @@ import { useRef, useEffect } from 'react';
 import styles from './modal.module.css';
 import Button from '../button/button/button';
 
-export const Modal = ({
-	modal,
-	refreshToDoList,
-	toggleModal,
-	requestPutToDo,
-	isEditToDo,
-	setIsEditToDo,
-	id,
-}) => {
+export const Modal = ({ modal, requestputtodo, isEditToDo, setIsEditToDo, id }) => {
 	const dialog = useRef();
 	useEffect(() => {
 		if (modal) {
@@ -22,13 +14,7 @@ export const Modal = ({
 	}, [modal]);
 
 	return createPortal(
-		<dialog
-			ref={dialog}
-			refreshToDoList={refreshToDoList}
-			toggleModal={toggleModal}
-			requestPutToDo={requestPutToDo}
-			className={styles.dialog}
-		>
+		<dialog ref={dialog} className={styles.dialog}>
 			<div className={styles.modal}>
 				<input
 					type="text"
@@ -39,7 +25,7 @@ export const Modal = ({
 				<Button
 					className={styles.button_dialod}
 					type="submit"
-					onClick={() => requestPutToDo(id)}
+					onClick={() => requestputtodo(id)}
 				>
 					Save
 				</Button>

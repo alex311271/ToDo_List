@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useRequestGetToDoList = (refreshToDoList, isSorted) => {
+export const useRequestGetToDoList = (refreshtodolist, isSorted) => {
 	const [toDoList, setToDoList] = useState([]);
 
 	useEffect(() => {
@@ -13,7 +13,7 @@ export const useRequestGetToDoList = (refreshToDoList, isSorted) => {
 			.then((data) => {
 				setToDoList(data);
 			});
-	}, [refreshToDoList, isSorted]);
+	}, [refreshtodolist, isSorted]);
 
 	return {
 		toDoList,

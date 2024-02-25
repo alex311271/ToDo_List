@@ -3,21 +3,43 @@ import './App.css';
 import Main from './Components/main/main';
 import { Header } from './Components/header/header';
 import { Input } from './Components/input/input';
+import { AppContext } from './app-context';
+
+const reducer = (state, action) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case 'SET_REFRESH_TODOLIST': {
+			return payload;
+		}
+		case 'SET_IS_SORTED': {
+			return payload;
+		}
+		default:
+			return state;
+	}
+};
 
 export const App = () => {
 	const [refreshTodoList, setRefreshTodoList] = useState(false);
-	const refreshToDoList = () => setRefreshTodoList(!refreshTodoList);
 	const [isSorted, setIsSorted] = useState(false);
-	const onSorted = () => setIsSorted(!isSorted);
+
+	const dispatch = (action) => {
+		const newRefresh = reducer(refreshTodoList, action);
+		setRefreshTodoList(newRefresh);
+		const newIsSorted = reducer(isSorted, action);
+		setIsSorted(newIsSorted);
+	};
 
 	return (
-		<div className="App">
-			<Header />
-			<Input refreshToDoList={refreshToDoList} onSorted={onSorted} />
-
-			<section>
-				<Main refreshToDoList={refreshToDoList} onSorted={onSorted} isSorted={isSorted} />
-			</section>
-		</div>
+		<AppContext.Provider value={{ refreshTodoList, isSorted, dispatch }}>
+			<div className="app">
+				<Header />
+				<Input />
+				<section>
+					<Main />
+				</section>
+			</div>
+		</AppContext.Provider>
 	);
 };

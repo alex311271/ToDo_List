@@ -1,8 +1,17 @@
 import * as hook from '../../hooks';
 import Button from '../button/button/button';
 import styles from './input.module.css';
+import { useContext } from 'react';
+import { AppContext } from '../../app-context';
 
-export const Input = ({ refreshToDoList, onSorted }) => {
+export const Input = () => {
+	const { refreshTodolist, isSorted, dispatch } = useContext(AppContext);
+	const refreshToDoList = () => {
+		dispatch({ type: 'SET_REFRESH_TODOLIST', payload: !refreshTodolist });
+	};
+	const onSorted = () => {
+		dispatch({ type: 'SET_IS_SORTED', payload: !isSorted });
+	};
 	const { requestAddTodo, text, setText } = hook.useRequestAddToDo({ refreshToDoList });
 
 	return (

@@ -1,4 +1,4 @@
-export const useRequestPutEditToDo = (refreshToDoList, toggleModal, isEditToDo) => {
+export const useRequestPutEditToDo = (refreshtodoList, togglemodal, isEditToDo) => {
 	const requestPutToDo = (id) => {
 		fetch(`http://localhost:3003/todoList/${id}`, {
 			method: 'PUT',
@@ -11,13 +11,13 @@ export const useRequestPutEditToDo = (refreshToDoList, toggleModal, isEditToDo) 
 			.then((response) => response.json())
 			.then((response) => {
 				console.log(`Зпись с id ${id} изменена, ответ сервера:`, response);
-				toggleModal();
+				togglemodal();
 			})
 			.catch((error) => {
 				console.error(error);
 			})
 
-			.finally(() => refreshToDoList());
+			.finally(() => refreshtodoList());
 	};
 	return {
 		requestPutToDo,

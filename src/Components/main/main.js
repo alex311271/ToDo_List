@@ -1,20 +1,29 @@
 import * as hook from '../../hooks';
 import Button from '../button/button/button.jsx';
 import styles from './main.module.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Modal } from '../modal/modal';
+import { AppContext } from '../../app-context.js';
 
-export default function Main({ refreshToDoList, onSorted, isSorted }) {
+export default function Main() {
 	const [modal, setModal] = useState(false);
-	const toggleModal = () => setModal(!modal);
+	const togglemodal = () => setModal(!modal);
 
-	const { toDoList } = hook.useRequestGetToDoList(refreshToDoList, isSorted);
-	const { requestDeleteToDo } = hook.useRequestDeleteToDo(refreshToDoList);
+	const { refreshTodolist, isSorted, dispatch } = useContext(AppContext);
+	const refreshtodolist = () => {
+		dispatch({ type: 'SET_REFRESH_TODOLIST', payload: !refreshTodolist });
+	};
+	const onSorted = () => {
+		dispatch({ type: 'SET_IS_SORTED', payload: !isSorted });
+	};
+
+	const { toDoList } = hook.useRequestGetToDoList(refreshtodolist, isSorted);
+	const { requestDeleteToDo } = hook.useRequestDeleteToDo(refreshtodolist);
 	const { isEditToDo, setIsEditToDo, id, editToDo } =
-		hook.useRequestGetEditToDoList(toggleModal);
+		hook.useRequestGetEditToDoList(togglemodal);
 	const { requestPutToDo } = hook.useRequestPutEditToDo(
-		refreshToDoList,
-		toggleModal,
+		refreshtodolist,
+		togglemodal,
 		isEditToDo,
 	);
 
@@ -37,9 +46,8 @@ export default function Main({ refreshToDoList, onSorted, isSorted }) {
 				<Button onClick={onSorted}>Sorted</Button>
 			</div>
 			<Modal
-				requestPutToDo={requestPutToDo}
-				refreshToDoList={refreshToDoList}
-				toggleModal={toggleModal}
+				requestputtodo={requestPutToDo}
+				togglemodal={togglemodal}
 				modal={modal}
 				isEditToDo={isEditToDo}
 				setIsEditToDo={setIsEditToDo}

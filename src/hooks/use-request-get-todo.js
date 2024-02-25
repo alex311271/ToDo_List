@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useRequestGetEditToDoList = (toggleModal) => {
+export const useRequestGetEditToDoList = (togglemodal) => {
 	const [isEditToDo, setIsEditToDo] = useState('');
 	const [id, setId] = useState('');
 
@@ -13,7 +13,7 @@ export const useRequestGetEditToDoList = (toggleModal) => {
 			.then((data) => {
 				setIsEditToDo(data.description);
 				setId(data.id);
-				toggleModal();
+				togglemodal();
 			})
 			.catch((error) => {
 				console.error(error);

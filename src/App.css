@@ -2,7 +2,7 @@ body {
 	background-color: #DCF2F1;
 }
 
-.App {
+.app {
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
